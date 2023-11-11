@@ -1,0 +1,24 @@
+{
+  "name": "academiaalert",
+  "version": "1.0.0",
+  "description": "Official Announcement App for NIT Raipur.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virajchandra51/AcademiaAlert.git"
+  },
+  "author": "NIT Raipur",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/virajchandra51/AcademiaAlert/issues"
+  },
+  "homepage": "https://github.com/virajchandra51/AcademiaAlert#readme",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1"
+  }
+}
