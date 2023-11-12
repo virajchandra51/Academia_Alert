@@ -2,7 +2,7 @@
   "name": "academiaalert",
   "version": "1.0.0",
   "description": "Official Announcement App for NIT Raipur.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
