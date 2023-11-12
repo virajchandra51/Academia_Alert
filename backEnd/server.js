@@ -12,23 +12,19 @@ process.on("uncaughtException", (err) => {
 
 const db = process.env.DATABASE.replace(
   "<PASSWORD>",
-  process.env.DATABASE_password
+  process.env.DATABASE_PASSWORD
 );
 
 mongoose
-  .connect(db, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  })
+  .connect(db)
   .then((con) => {
-    console.log(con.connections);
+    //console.log(con.connections);
     console.log("DB connection succesful!");
   });
 
-const port = process.env.port || 3000;
+const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
-  console.log(`App is running on port ${port}`);
+  console.log(`App is running on port ${port} in '${process.env.NODE_ENV}' mode`);
 });
 
 process.on("unhandledRejection", (err) => {
