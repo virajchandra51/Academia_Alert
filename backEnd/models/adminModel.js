@@ -16,6 +16,27 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, "Please provide a valid email"],
   },
 
+  role: {
+    type: String,
+    default: "user",
+  },
+
+  gender: {
+    type: String,
+    enum: ['M', 'F', 'Transformer'],
+    default: 'Transformer'
+  },
+
+  club: {
+    type: String,
+  },
+
+  roleInClub: {
+    type: String,
+  },
+
+  photo: String,
+
   password: {
     type: String,
     required: [true, "Please enter a password"],
@@ -27,21 +48,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please confirm your password"],
     validate: {
-      //This only works on CREATE NEW OBJECT IN DB or SAVE!!!
       validator: function (el) {
         return el === this.password;
       },
-      message: "Confirm Passwor does not match",
+      message: "Passwords are not the same",
     },
   },
 });
 
-//The middleware will run 'pre' to the 'save' action, i.e. before placing the data into db
 userSchema.pre("save", async function (next) {
   // run this function iff password is modified
   if (!this.isModified("password")) return next();
 
-  // Hashing password with a cost of 12; hash method is async in nature
+  // Hashing password with a cost of 12
   this.password = await bcrypt.hash(this.password, 12);
 
   // Delete password confirm field
