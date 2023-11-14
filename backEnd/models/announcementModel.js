@@ -53,13 +53,13 @@ const announcementSchema = new mongoose.Schema(
 );
 
 // announcementSchema.index({ price: 1 });
-announcementSchema.index({ price: 1, ratingsAverage: -1 });
-announcementSchema.index({ slug: 1 });
-announcementSchema.index({ startLocation: "2dsphere" });
+// announcementSchema.index({ price: 1, ratingsAverage: -1 });
+// announcementSchema.index({ slug: 1 });
+// announcementSchema.index({ startLocation: "2dsphere" });
 
-announcementSchema.virtual("durationWeeks").get(function () {
-  return this.duration / 7;
-});
+// announcementSchema.virtual("durationWeeks").get(function () {
+//   return this.duration / 7;
+// });
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 announcementSchema.pre("save", function (next) {
