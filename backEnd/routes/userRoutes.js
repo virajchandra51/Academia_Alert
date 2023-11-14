@@ -10,19 +10,23 @@ router.get("/logout", authController.logout);
 router.get("/getAll", userController.getAllUsers);
 
 // Protect all routes after this middleware
-router.use(authController.protect);
+//router.use(authController.protect);
 
-router.patch("/updateMe", authController.protect, userController.updateMe);
+router.patch("/updateMe", userController.updateMe);
 router.delete("/deleteMe", userController.deleteMe);
 
-router.route("/").post(userController.createUser);
+router.route("/createUser").post(userController.createUser);
 
-router.route("/").get(userController.getAllUsers);
+router.route("/getAllUsers").get(userController.getAllUsers);
 
 router
   .route("/:id")
   .get(userController.getUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
+
+//PASSWORD RESET
+router.post('/forgetPassword', authController.forgetPassword);
+
 
 module.exports = router;
