@@ -16,6 +16,12 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, "Please provide a valid email"],
   },
 
+  gender: {
+    type: String,
+    enum: ["M", "F", "Other", "not specified"],
+    default: "not specified",
+  },
+
   password: {
     type: String,
     required: [true, "Please enter a password"],
