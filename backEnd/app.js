@@ -1,15 +1,15 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const morgan = require('morgan');
+const express = require("express");
+const dotenv = require("dotenv");
+const morgan = require("morgan");
 
 //ROUTERS
-const userRouter = require('./routes/userRoutes');
-const viewRouter = require('./routes/viewRoutes');
+const userRouter = require("./routes/userRoutes");
+const viewRouter = require("./routes/viewRoutes");
 
 const app = express();
 
-if(process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'))
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
 //express.json(), it's specifically about converting the incoming JSON-formatted data into a JavaScript object.
@@ -17,10 +17,10 @@ if(process.env.NODE_ENV === 'development') {
 app.use(express.json());
 
 //Will parse the URL Encoded data into the req.body object
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 //Routes
-app.use('/', viewRouter);
-app.use('/api/v1/user', userRouter);
+app.use("/", viewRouter);
+app.use("/api/v1/users", userRouter);
 
 module.exports = app;
