@@ -189,3 +189,23 @@ exports.isLoggedIn = async (req, res, next) => {
   }
   next();
 };
+
+
+
+
+
+//FORGET PASSWORD
+exports.forgetPassword = catchAsync(async (req, res) => {
+  const eMail = req.body.email
+  const user = await User.findOne({email: req.body.email});
+  //1) Check if user email exist in db
+  if (user) {
+    const resetToken = user.createForgetPasswordResetToken();
+    await user.save( { validateBeforeSave: false } )
+  } else {
+    res.status(200).json({
+      "status": "fail",
+      "message": "this email does not exist"
+    })
+  }
+});
