@@ -19,7 +19,7 @@ export default function OnboardingScreen() {
   const navigation = useNavigation();
 
   const handleDone = () => {
-    navigation.navigate("Welcome");
+    navigation.navigate("Signup");
     setItem("onboarded", "1");
   };
 

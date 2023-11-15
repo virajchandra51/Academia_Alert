@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import WelcomeScreen from "./screens/WelcomeScreen.js";
 import OnboardingScreen from "./screens/OnboardingScreen.js";
 import { getItem } from "./utils/asyncStorage.js";
-import LoginScreen from "./screens/LoginScreen.js";
+import WelcomeScreen from "./screens/WelcomeScreen.js";
 import SignupScreen from "./screens/SignupScreen.js";
 
 const Stack = createNativeStackNavigator();
@@ -44,13 +43,8 @@ const App = () => {
             component={WelcomeScreen}
           />
           <Stack.Screen
-            name="Login"
-            options={{ headerShown: false, presentation: 'modal' }}
-            component={LoginScreen}
-          />
-          <Stack.Screen
             name="Signup"
-            options={{ headerShown: false, presentation: 'modal' }}
+            options={{ headerShown: false}}
             component={SignupScreen}
           />
         </Stack.Navigator>
