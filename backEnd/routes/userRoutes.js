@@ -29,7 +29,7 @@ router
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
-//PASSWORD RESET
+//PASSWORD FORGET & RESET
 router.post('/forgetPassword', authController.forgetPassword);
 router.patch('/resetPassword/:token', authController.resetPassword);
 
