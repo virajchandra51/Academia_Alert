@@ -2,9 +2,9 @@ const User = require("./../models/userModel");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const AppError = require("../utils/appError");
-const catchAsync = require("../utils/catchAsync");
-const sendEmail = require('../utils/sendEmail')
+const AppError = require("./../utils/appError");
+const catchAsync = require("./../utils/catchAsync");
+const Email = require('./../utils/email');
 
 const { promisify } = require("util");
 
@@ -39,10 +39,20 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create(req.body);
-  const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+  const newUser = await User.create({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    passwordConfirm: req.body.passwordConfirm
   });
+  //SEND THE WELCOME EMAIL TO THE USER
+  const url = `${req.protocol}://${req.get('host')}/me`;
+  console.log(url);
+  await new Email(newUser, url).sendWelcome();
+
+  // const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+  //   expiresIn: process.env.JWT_EXPIRES_IN,
+  // });
 
   createSendToken(newUser, 201, res);
 });
@@ -221,11 +231,11 @@ exports.forgetPassword = catchAsync(async (req, res) => {
 
 
   try {
-    await sendEmail({
-      email: eMail,
-      subject: 'This link is only valid for next 10 mins',
-      message: message
-    })
+    // await sendEmail({
+    //   email: eMail,
+    //   subject: 'This link is only valid for next 10 mins',
+    //   message: message
+    // })
   
     res.status(200).json({
       status: "success",
