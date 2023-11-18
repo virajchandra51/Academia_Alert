@@ -10,14 +10,6 @@ const announcementSchema = new mongoose.Schema(
       required: [true, "A announcement must have a title"],
       unique: true,
       trim: true,
-      maxlength: [
-        40,
-        "A announcement title must have less or equal then 40 characters",
-      ],
-      minlength: [
-        10,
-        "A announcement title must have more or equal then 10 characters",
-      ],
       // validate: [validator.isAlpha, 'announcement name must only contain characters']
     },
     slug: String,
@@ -26,20 +18,15 @@ const announcementSchema = new mongoose.Schema(
       type: String,
     },
 
-    summary: {
+    description: {
       type: String,
       trim: true,
       required: [true, "A announcement must have a description"],
     },
-    description: {
-      type: String,
-      trim: true,
-    },
     imageCover: {
       type: String,
-      required: [true, "A announcement must have a cover image"],
+      //required: [true, "A announcement must have a cover image"],
     },
-    images: [String],
     createdAt: {
       type: Date,
       default: Date.now(),
@@ -63,7 +50,7 @@ const announcementSchema = new mongoose.Schema(
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 announcementSchema.pre("save", function (next) {
-  this.slug = slugify(this.name, { lower: true });
+  this.slug = slugify(this.title, { lower: true });
   next();
 });
 

@@ -5,6 +5,7 @@ const morgan = require("morgan");
 //ROUTERS
 const userRouter = require("./routes/userRoutes");
 const viewRouter = require("./routes/viewRoutes");
+const announcementRouter = require("./routes/announcementRoutes");
 
 const app = express();
 
@@ -22,5 +23,6 @@ app.use(express.urlencoded({ extended: false }));
 //Routes
 app.use("/", viewRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/announcements", announcementRouter);
 
 module.exports = app;
