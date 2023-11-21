@@ -54,7 +54,41 @@ const WelcomeScreen = ({ navigation }) => {
               marginVertical: 8,
             }}
           >
-            Email address
+            Name
+          </Text>
+
+          <View
+            style={{
+              width: "100%",
+              height: 48,
+              borderColor: theme.COLORS.black,
+              borderWidth: 1,
+              borderRadius: 8,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingLeft: 22,
+            }}
+          >
+            <TextInput
+              placeholder="Enter your name"
+              placeholderTextColor={theme.COLORS.black}
+              keyboardType="text"
+              style={{
+                width: "100%",
+              }}
+            />
+          </View>
+        </View>
+
+        <View style={{ marginBottom: 12 }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "400",
+              marginVertical: 8,
+            }}
+          >
+            Email Address
           </Text>
 
           <View

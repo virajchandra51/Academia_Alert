@@ -57,7 +57,7 @@ export default function OnboardingScreen() {
         DoneButtonComponent={doneButton}
         NextButtonComponent={nextButton}
         SkipButtonComponent={skipButton}
-        containerStyles={{ paddingHorizontal: 16 }}
+        containerStyles={{ paddingHorizontal: 16, paddingBottom: 100 }}
         titleStyles={styles.title}
         subTitleStyles={styles.subtitle}
         imageContainerStyles={styles.image}
