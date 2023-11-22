@@ -51,7 +51,8 @@ const HomeScreen = () => {
       </View>
       <ScrollView
         style={{
-          paddingVertical: theme.SIZES.medium,
+          marginVertical: theme.SIZES.large,
+          padding: theme.SIZES.xSmall,
           flex: 1,
         }}
         showsVerticalScrollIndicator="false"
