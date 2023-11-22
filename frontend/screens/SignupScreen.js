@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,7 +15,6 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import Button from "../components/Button";
 import logo from "../assets/logp.png";
-import axios from 'axios'
 import { base_url } from "../utils/constants";
 
 const Signup = ({ navigation }) => {
@@ -22,35 +22,54 @@ const Signup = ({ navigation }) => {
   const [isConfirmPasswordShown, setIsConfirmPasswordShown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
-  const [name,setName] = useState("");
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
-  const [passwordConfirm,setPasswordConfirm] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const handleSignUp = async () => {
+    if(!isChecked) {
+      Alert.alert(
+        "Oops! Registration Unsuccessful",
+        "Please agree to the terms and conditions."
+      );
+      return;
+    }
     console.log("pressed");
     const user = {
       name: name,
       email: email,
       password: password,
       passwordConfirm: passwordConfirm,
-    }
-    // console.log(`${base_url}/users/signup`);
-    await axios({
-      method: 'get',
-      url: 'http://localhost:3000/api/v1/users/getAll',
+    };
+    await fetch(`${base_url}/users/signup`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-      }
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
     })
-      .then(async function (response) {
-        // const data = await response.json();
-        console.log(response);
-      }).catch(function (error) {
-        console.log(error);
+      .then(async (response) => {
+        const data = await response.json();
+        console.log(data);
+        Alert.alert(
+          "Woohhoo! Registration Successful",
+          "Welcome to Academia Alert!"
+        );
+        // setName("");
+        // setEmail("");
+        // setPassword("");
+        // setPasswordConfirm("");
+        navigation.navigate("Home");
+      })
+      .catch((err) => {
+        console.log(err);
+        Alert.alert(
+          "Oops! Registration Unsuccessful",
+          "Please check your internet"
+        );
       });
-
-  }
+  };
 
   console.log(name);
   console.log(email);
@@ -81,7 +100,7 @@ const Signup = ({ navigation }) => {
                 color: theme.COLORS.black,
               }}
             >
-              Create Account
+              Create Account 📢
             </Text>
 
             <Text
@@ -115,7 +134,7 @@ const Signup = ({ navigation }) => {
                 borderRadius: 8,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingLeft: 22,
+                paddingLeft: 16,
               }}
             >
               <TextInput
@@ -123,7 +142,7 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={theme.COLORS.black}
                 keyboardType="name"
                 value={name}
-                onChangeText={text => setName(text)}
+                onChangeText={(text) => setName(text)}
                 style={{
                   width: "100%",
                 }}
@@ -151,7 +170,7 @@ const Signup = ({ navigation }) => {
                 borderRadius: 8,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingLeft: 22,
+                paddingLeft: 16,
               }}
             >
               <TextInput
@@ -159,7 +178,7 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={theme.COLORS.black}
                 keyboardType="email"
                 value={email}
-                onChangeText={text => setEmail(text)}
+                onChangeText={(text) => setEmail(text)}
                 style={{
                   width: "100%",
                 }}
@@ -188,7 +207,7 @@ const Signup = ({ navigation }) => {
               alignItems: "center",
               flexDirection: "row",
               justifyContent: "space-between",
-              paddingLeft: 22,
+              paddingLeft: 16,
             }}
           >
             <TextInput
@@ -234,7 +253,7 @@ const Signup = ({ navigation }) => {
                 borderRadius: 8,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingLeft: 22,
+                paddingLeft: 16,
               }}
             >
               <TextInput
@@ -242,7 +261,7 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={theme.COLORS.black}
                 secureTextEntry={isPasswordShown}
                 value={password}
-                onChangeText={text => setPassword(text)}
+                onChangeText={(text) => setPassword(text)}
                 style={{
                   width: "100%",
                 }}
@@ -288,7 +307,7 @@ const Signup = ({ navigation }) => {
                 borderRadius: 8,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingLeft: 22,
+                paddingLeft: 16,
               }}
             >
               <TextInput
@@ -296,7 +315,7 @@ const Signup = ({ navigation }) => {
                 placeholderTextColor={theme.COLORS.black}
                 secureTextEntry={isConfirmPasswordShown}
                 value={passwordConfirm}
-                onChangeText={text => setPasswordConfirm(text)}
+                onChangeText={(text) => setPasswordConfirm(text)}
                 style={{
                   width: "100%",
                 }}
@@ -328,6 +347,7 @@ const Signup = ({ navigation }) => {
             style={{
               flexDirection: "row",
               marginVertical: 6,
+              alignItems: "center",
             }}
           >
             <Checkbox
