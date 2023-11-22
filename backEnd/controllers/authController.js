@@ -46,9 +46,9 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm
   });
   //SEND THE WELCOME EMAIL TO THE USER
-  const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
-  await new Email(newUser, url).sendWelcome();
+  // const url = `${req.protocol}://${req.get('host')}/me`;
+  // console.log(url);
+  // await new Email(newUser, url).sendWelcome();
 
   // const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
   //   expiresIn: process.env.JWT_EXPIRES_IN,

@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { theme } from "../utils/theme";
 import { Ionicons } from "@expo/vector-icons";
-// import Checkbox from "expo-checkbox"
+import Checkbox from "expo-checkbox";
 import { removeItem } from "../utils/asyncStorage";
 import Button from "../components/Button";
 
@@ -168,12 +168,12 @@ const WelcomeScreen = ({ navigation }) => {
             marginVertical: 6,
           }}
         >
-          {/* <Checkbox
-                        style={{ marginRight: 8 }}
-                        value={isChecked}
-                        onValueChange={setIsChecked}
-                        color={isChecked ? theme.COLORS.primary : undefined}
-                    /> */}
+          <Checkbox
+            style={{ marginRight: 8 }}
+            value={isChecked}
+            onValueChange={setIsChecked}
+            color={isChecked ? theme.COLORS.primary : undefined}
+          />
 
           <Text>Remember Me</Text>
         </View>
