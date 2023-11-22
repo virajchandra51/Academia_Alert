@@ -2,28 +2,28 @@ const AppError = require("./../utils/appError");
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;
-  return new AppError(message, 0);
+  return new AppError(message, 400);
 };
 
 const handleDuplicateFieldsDB = (err) => {
   const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
 
   const message = `Duplicate field value: ${value}. Please use another value!`;
-  return new AppError(message, 0);
+  return new AppError(message, 400);
 };
 
 const handleValidationErrorDB = (err) => {
   const errors = Object.values(err.errors).map((el) => el.properties.path);
   for (const error of errors) {
     if (error == "password") {
-      return new AppError("Password is not strong enough!", 0);
+      return new AppError("Password is not strong enough!", 400);
     } else if (error == "passwordConfirm") {
       return new AppError(
         "Password confirmation does not match password!",
         400
       );
     } else if (error == "email") {
-      return new AppError("Please enter a valid email", 0);
+      return new AppError("Please enter a valid email", 400);
     }
   }
   const message = `Invalid input data. ${errors.join(". ")}`;
@@ -31,10 +31,10 @@ const handleValidationErrorDB = (err) => {
 };
 
 const handleJWTError = () =>
-  new AppError("Invalid token. Please log in again!", 0);
+  new AppError("Invalid token. Please log in again!", 401);
 
 const handleJWTExpiredError = () =>
-  new AppError("Your token has expired! Please log in again.", 0);
+  new AppError("Your token has expired! Please log in again.", 401);
 
 const sendErrorDev = (err, req, res) => {
   // A) API

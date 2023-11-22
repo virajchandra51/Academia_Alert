@@ -56,7 +56,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   //   expiresIn: process.env.JWT_EXPIRES_IN,
   // });
 
-  createSendToken(newUser, 1, res);
+  createSendToken(newUser, 200, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -74,7 +74,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Incorrect email or password", 0));
   }
   // if everything is okay, send the token to client
-  createSendToken(user, 1, res);
+  createSendToken(user, 200, res);
 });
 
 exports.logout = (req, res) => {
@@ -110,14 +110,17 @@ exports.protect = catchAsync(async (req, res, next) => {
   const currentUser = await User.findById(decoded.id);
   if (!currentUser) {
     return next(
-      new AppError("The user belonging to this token does no longer exist.", 0)
+      new AppError(
+        "The user belonging to this token does no longer exist.",
+        401
+      )
     );
   }
 
   // 4) Check if user changed password after the token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
-      new AppError("User recently changed password! Please log in again.", 0)
+      new AppError("User recently changed password! Please log in again.", 401)
     );
   }
 
