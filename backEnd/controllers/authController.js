@@ -30,8 +30,8 @@ const createSendToken = (user, statusCode, res) => {
   user.password = undefined;
   if (statusCode == 200) {
     res.status(statusCode).json({
-      status: "success",
-      statusCode: statusCode,
+      status_msg: "success",
+      status_code: statusCode,
       token,
       data: {
         user,
