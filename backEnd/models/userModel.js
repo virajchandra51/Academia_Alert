@@ -3,7 +3,6 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -18,6 +17,10 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, "Please provide a valid email"],
   },
 
+  role: {
+    type: String,
+    default: "User",
+  },
 
   password: {
     type: String,
@@ -38,7 +41,7 @@ const userSchema = new mongoose.Schema({
     },
   },
   passwordResetToken: String,
-  passwordResetExpires: Date
+  passwordResetExpires: Date,
 });
 
 //The middleware will run 'pre' to the 'save' action, i.e. before placing the data into db
@@ -89,18 +92,21 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 };
 
 //FORGET PASSWORD
-userSchema.methods.createForgetPasswordResetToken = function(){
+userSchema.methods.createForgetPasswordResetToken = function () {
   //GENERATE RANDOM TOKEN (RANDOM PASSWORD TO BE SENT TO USER VIA EMAIL) USING INBUILT crypto
-  const randomTokenOrPassword = crypto.randomBytes(32).toString('hex');
+  const randomTokenOrPassword = crypto.randomBytes(32).toString("hex");
   //HASH THE RANDOM TOKEN (PASSWORD) AND UPDATE DB WITH THE HASHED PASSWORD AND EXPIRE DATE(TIME 10min)
-  this.passwordResetToken = crypto.createHash('sha256').update(randomTokenOrPassword).digest('hex');
-  this.passwordResetExpires = Date.now() + (10*60*1000)
-  
-  console.log({randomTokenOrPassword}, this.passwordResetToken);
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(randomTokenOrPassword)
+    .digest("hex");
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  console.log({ randomTokenOrPassword }, this.passwordResetToken);
 
   //WE'LL RETURN/SEND THE UNENCRYPTED VERSION OF RANDOM PASSWORD VIA MAIL AND SAVE THE ENCRYPTED VERSION INTO THE DB
   return randomTokenOrPassword;
-}
+};
 
 const User = mongoose.model("User", userSchema);
 
