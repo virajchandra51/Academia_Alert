@@ -15,6 +15,7 @@ import Checkbox from "expo-checkbox";
 import { removeItem } from "../utils/asyncStorage";
 import Button from "../components/Button";
 import { base_url } from "../utils/constants";
+import { setItem } from "../utils/asyncStorage";
 
 const WelcomeScreen = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -38,13 +39,25 @@ const WelcomeScreen = ({ navigation }) => {
       .then(async (response) => {
         const data = await response.json();
         console.log(data);
-        Alert.alert(
-          "Woohhoo! Login Successful",
-          "Welcome to Academia Alert!"
-        );
-        // setEmail("");
-        // setPassword("");
-        navigation.navigate("Home")
+        if(data.status_code === 200)
+        {
+          Alert.alert(
+            "Woohhoo! Login Successful",
+            "Welcome to Academia Alert!"
+          );
+          // setEmail("");
+          // setPassword("");
+          navigation.navigate("Home")
+          if(isChecked)
+          setItem("authToken", data.token);
+        }
+        else
+        {
+          Alert.alert(
+            "Oops! Login Unsuccessful",
+            data.status_msg
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
