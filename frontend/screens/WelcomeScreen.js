@@ -79,7 +79,7 @@ const WelcomeScreen = ({ navigation }) => {
               color: theme.COLORS.black,
             }}
           >
-            Hi, Welcome Back ! 👋
+            Hi, Welcome Back ! 👋🏻
           </Text>
 
           <Text

@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, SafeViewArea } from 'react-native'
 import React from 'react'
+import { theme } from '../utils/theme'
 
 const AdminScreen = () => {
   return (
-    <View>
-      <Text>AdminScreen</Text>
-    </View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.COLORS.white }}>
+      <Text style={{ }}>Hi</Text>
+    </SafeAreaView>
   )
 }
 
