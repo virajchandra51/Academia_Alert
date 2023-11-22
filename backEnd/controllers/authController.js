@@ -4,7 +4,7 @@ const crypto = require("crypto");
 
 const AppError = require("./../utils/appError");
 const catchAsync = require("./../utils/catchAsync");
-const Email = require('./../utils/email');
+const Email = require("./../utils/email");
 
 const { promisify } = require("util");
 
@@ -28,14 +28,16 @@ const createSendToken = (user, statusCode, res) => {
 
   // Remove password from output
   user.password = undefined;
-
-  res.status(statusCode).json({
-    status: "success",
-    token,
-    data: {
-      user,
-    },
-  });
+  if (statusCode == 1) {
+    res.status(statusCode).json({
+      status: "success",
+      statusCode: statusCode,
+      token,
+      data: {
+        user,
+      },
+    });
+  }
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
@@ -43,7 +45,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    passwordConfirm: req.body.passwordConfirm
+    passwordConfirm: req.body.passwordConfirm,
   });
   //SEND THE WELCOME EMAIL TO THE USER
   // const url = `${req.protocol}://${req.get('host')}/me`;
@@ -54,7 +56,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   //   expiresIn: process.env.JWT_EXPIRES_IN,
   // });
 
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 1, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -62,17 +64,17 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // Checking for existence of email and password
   if (!email || !password) {
-    return next(new AppError("Please provide Email and Password!", 400));
+    return next(new AppError("Please provide Email and Password!", 0));
   }
 
   // Checking if user exists and credentials are correct
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.correctPassword(password, user.password))) {
-    return next(new AppError("Incorrect email or password", 401));
+    return next(new AppError("Incorrect email or password", 0));
   }
   // if everything is okay, send the token to client
-  createSendToken(user, 200, res);
+  createSendToken(user, 1, res);
 });
 
 exports.logout = (req, res) => {
@@ -108,17 +110,14 @@ exports.protect = catchAsync(async (req, res, next) => {
   const currentUser = await User.findById(decoded.id);
   if (!currentUser) {
     return next(
-      new AppError(
-        "The user belonging to this token does no longer exist.",
-        401
-      )
+      new AppError("The user belonging to this token does no longer exist.", 0)
     );
   }
 
   // 4) Check if user changed password after the token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
-      new AppError("User recently changed password! Please log in again.", 401)
+      new AppError("User recently changed password! Please log in again.", 0)
     );
   }
 
@@ -204,31 +203,27 @@ exports.isLoggedIn = async (req, res, next) => {
   next();
 };
 
-
-
-
-
 //FORGET PASSWORD
 exports.forgetPassword = catchAsync(async (req, res) => {
-  const eMail = req.body.email
-  const user = await User.findOne({email: eMail});
+  const eMail = req.body.email;
+  const user = await User.findOne({ email: eMail });
   //1) Check if user email exist in db
-  if (!user) { 
+  if (!user) {
     res.status(200).json({
-      "status": "fail",
-      "message": "this email does not exist"
-    })
+      status: "fail",
+      message: "this email does not exist",
+    });
   }
   //2) Generate a random reset token/password
   const resetToken = user.createForgetPasswordResetToken();
-  await user.save( { validateBeforeSave: false } )
-
+  await user.save({ validateBeforeSave: false });
 
   //3) send it to users email
-  const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`
+  const resetURL = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/users/resetPassword/${resetToken}`;
 
-  const message = `Forgot your password? Send a PATCH req with your new password and confirm password to: ${resetURL} \n if you didn't forgot your password then please ignore this email`
-
+  const message = `Forgot your password? Send a PATCH req with your new password and confirm password to: ${resetURL} \n if you didn't forgot your password then please ignore this email`;
 
   try {
     // await sendEmail({
@@ -236,32 +231,34 @@ exports.forgetPassword = catchAsync(async (req, res) => {
     //   subject: 'This link is only valid for next 10 mins',
     //   message: message
     // })
-  
+
     res.status(200).json({
       status: "success",
-      message: "Token sent to email"
-    })
+      message: "Token sent to email",
+    });
   } catch (error) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    user.save( {validateBeforeSave: false} )
+    user.save({ validateBeforeSave: false });
   }
-  
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
   //1) GET USER BASED ON THE TOKEN HE FROM THE URL PARAMETER
   const tokenFromUserParam = req.params.token;
   //2) HASH THE TOKEN WITH CRYPTO TO MATCH IT FROM DB(ALREADY MADE AWAILABLE IN DB AT THE TIME OF FORGET PASSWORD REQ)
-  const hashedToken = crypto.createHash('sha256').update(tokenFromUserParam).digest('hex');
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(tokenFromUserParam)
+    .digest("hex");
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: {$gt: Date.now()}
-  })
+    passwordResetExpires: { $gt: Date.now() },
+  });
 
   //If token has expire
-  if(!user) {
-    return next(new AppError('Token is invalid or has already expired!', 400))
+  if (!user) {
+    return next(new AppError("Token is invalid or has already expired!", 400));
   }
 
   //3) SET NEW PASSWORD AND MAKE THE TOKEN AND EXPIRED TIME TO 0
@@ -277,6 +274,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    token
-  })
-})
+    token,
+  });
+});

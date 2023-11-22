@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
-
+const globalErrorHandler = require("./controllers/errorController");
 //ROUTERS
 const userRouter = require("./routes/userRoutes");
 const viewRouter = require("./routes/viewRoutes");
@@ -26,5 +26,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/", viewRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/announcements", announcementRouter);
+
+// Implementing Global error handling middeleware
+app.all("*", (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+app.use(globalErrorHandler);
 
 module.exports = app;

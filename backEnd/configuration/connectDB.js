@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const path = require('path');
-const app = require('./../app')
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const path = require("path");
+const app = require("./../app");
 
 //const { config } = require('process');
 
@@ -16,10 +16,10 @@ const db = process.env.DATABASE.replace(
 
 const connectToDB = async () => {
   const conn = await mongoose.connect(db, {
-    useNewUrlParser : true,
-  }); 
+    useNewUrlParser: true,
+  });
 
   console.log(`DB connected successfully to ${conn.connection.host}`);
-}
+};
 
 module.exports = connectToDB;
