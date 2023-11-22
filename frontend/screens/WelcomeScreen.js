@@ -5,6 +5,7 @@ import {
   Pressable,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,13 +14,45 @@ import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
 import { removeItem } from "../utils/asyncStorage";
 import Button from "../components/Button";
+import { base_url } from "../utils/constants";
 
 const WelcomeScreen = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const handleReset = async () => {
-    await removeItem("onboarded");
-    navigation.navigate("Onboarding");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+ 
+  const handleLogin = async () => {
+    console.log("pressed");
+    const user = {
+      email: email,
+      password: password,
+    };
+    await fetch(`${base_url}/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then(async (response) => {
+        const data = await response.json();
+        console.log(data);
+        Alert.alert(
+          "Woohhoo! Login Successful",
+          "Welcome to Academia Alert!"
+        );
+        // setEmail("");
+        // setPassword("");
+        navigation.navigate("Home")
+      })
+      .catch((err) => {
+        console.log(err);
+        Alert.alert(
+          "Oops! Login Unsuccessful",
+          "Please check your internet"
+        );
+      });
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.COLORS.white }}>
@@ -54,40 +87,6 @@ const WelcomeScreen = ({ navigation }) => {
               marginVertical: 8,
             }}
           >
-            Name
-          </Text>
-
-          <View
-            style={{
-              width: "100%",
-              height: 48,
-              borderColor: theme.COLORS.black,
-              borderWidth: 1,
-              borderRadius: 8,
-              alignItems: "center",
-              justifyContent: "center",
-              paddingLeft: 22,
-            }}
-          >
-            <TextInput
-              placeholder="Enter your name"
-              placeholderTextColor={theme.COLORS.black}
-              keyboardType="text"
-              style={{
-                width: "100%",
-              }}
-            />
-          </View>
-        </View>
-
-        <View style={{ marginBottom: 12 }}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: "400",
-              marginVertical: 8,
-            }}
-          >
             Email Address
           </Text>
 
@@ -100,13 +99,15 @@ const WelcomeScreen = ({ navigation }) => {
               borderRadius: 8,
               alignItems: "center",
               justifyContent: "center",
-              paddingLeft: 22,
+              paddingLeft: 16,
             }}
           >
             <TextInput
               placeholder="Enter your email address"
               placeholderTextColor={theme.COLORS.black}
-              keyboardType="email-address"
+              keyboardType="email"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
               style={{
                 width: "100%",
               }}
@@ -134,13 +135,15 @@ const WelcomeScreen = ({ navigation }) => {
               borderRadius: 8,
               alignItems: "center",
               justifyContent: "center",
-              paddingLeft: 22,
+              paddingLeft: 16,
             }}
           >
             <TextInput
               placeholder="Enter your password"
               placeholderTextColor={theme.COLORS.black}
               secureTextEntry={isPasswordShown}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
               style={{
                 width: "100%",
               }}
@@ -166,6 +169,7 @@ const WelcomeScreen = ({ navigation }) => {
           style={{
             flexDirection: "row",
             marginVertical: 6,
+            alignItems: "center",
           }}
         >
           <Checkbox
@@ -181,6 +185,7 @@ const WelcomeScreen = ({ navigation }) => {
         <Button
           title="Login"
           filled
+          onPress={handleLogin}
           style={{
             marginTop: 18,
             marginBottom: 4,
@@ -219,32 +224,6 @@ const WelcomeScreen = ({ navigation }) => {
             justifyContent: "center",
           }}
         >
-          <TouchableOpacity
-            onPress={() => console.log("Pressed")}
-            style={{
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "row",
-              height: 52,
-              borderWidth: 1,
-              borderColor: theme.COLORS.gray,
-              marginRight: 4,
-              borderRadius: 10,
-            }}
-          >
-            <Image
-              source={require("../assets/icons/facebook.png")}
-              style={{
-                height: 36,
-                width: 36,
-                marginRight: 8,
-              }}
-              resizeMode="contain"
-            />
-
-            <Text>Facebook</Text>
-          </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => console.log("Pressed")}
@@ -296,9 +275,6 @@ const WelcomeScreen = ({ navigation }) => {
             </Text>
           </Pressable>
         </View>
-        <TouchableOpacity onPress={handleReset}>
-          <Text>Reset</Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
