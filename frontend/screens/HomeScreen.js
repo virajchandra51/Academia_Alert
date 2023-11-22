@@ -14,8 +14,9 @@ import EventsData from "../assets/eventsData";
 import { theme } from "../utils/theme";
 import search from "../assets/icons/search.png";
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const [searchTerm, setSearchTerm] = useState("");
+  
   return (
     <SafeAreaView
       style={{
@@ -51,14 +52,14 @@ const HomeScreen = () => {
       </View>
       <ScrollView
         style={{
-          marginVertical: theme.SIZES.large,
+          marginTop: theme.SIZES.large,
           padding: theme.SIZES.xSmall,
           flex: 1,
         }}
         showsVerticalScrollIndicator="false"
       >
         {EventsData.map((event, index) => {
-          return <EventCard event={event} key={index} />;
+          return <EventCard event={event} key={index} navigation={navigation}/>;
         })}
       </ScrollView>
     </SafeAreaView>

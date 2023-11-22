@@ -19,9 +19,9 @@ import { setItem } from "../utils/asyncStorage";
 
 const WelcomeScreen = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isChecked, setIsChecked] = useState(true);
+  const [email, setEmail] = useState("virajchandra51@gmail.com");
+  const [password, setPassword] = useState("12345678");
  
   const handleLogin = async () => {
     console.log("pressed");
@@ -38,7 +38,7 @@ const WelcomeScreen = ({ navigation }) => {
     })
       .then(async (response) => {
         const data = await response.json();
-        console.log(data);
+        console.log(data.data.user);
         if(data.status_code === 200)
         {
           Alert.alert(
@@ -49,7 +49,10 @@ const WelcomeScreen = ({ navigation }) => {
           // setPassword("");
           navigation.navigate("Home")
           if(isChecked)
-          setItem("authToken", data.token);
+          {
+            setItem("authToken", data.token);
+            setItem("userData", JSON.stringify(data.data.user));
+          }
         }
         else
         {

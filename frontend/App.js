@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen.js";
 import ProfileScreen from "./screens/ProfileScreen.js";
 import AdminScreen from "./screens/AdminScreen.js";
+import EventScreen from "./screens/EventScreen.js";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView, View } from "react-native";
@@ -112,7 +113,7 @@ const App = () => {
   if (showOnboarding) {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Welcome">
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false, headerShadowVisible: false }}
@@ -132,6 +133,15 @@ const App = () => {
             name="Home"
             component={Home}
             options={{ headerShown: false, headerShadowVisible: false }}
+          />
+          <Stack.Screen
+            name="Event"
+            component={EventScreen}
+            options={{
+              headerShown: false,
+              headerShadowVisible: false,
+              presentation: "modal",
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -139,7 +149,7 @@ const App = () => {
   } else if (loggedIn) {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Welcome">
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false, headerShadowVisible: false }}
@@ -159,6 +169,15 @@ const App = () => {
             name="Home"
             component={Home}
             options={{ headerShown: false, headerShadowVisible: false }}
+          />
+          <Stack.Screen
+            name="Event"
+            component={EventScreen}
+            options={{
+              headerShown: false,
+              headerShadowVisible: false,
+              presentation: "modal",
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -166,7 +185,7 @@ const App = () => {
   } else {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Welcome">
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false, headerShadowVisible: false }}
@@ -186,6 +205,15 @@ const App = () => {
             name="Home"
             component={Home}
             options={{ headerShown: false, headerShadowVisible: false }}
+          />
+          <Stack.Screen
+            name="Event"
+            component={EventScreen}
+            options={{
+              headerShown: false,
+              headerShadowVisible: false,
+              presentation: "modal",
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>
