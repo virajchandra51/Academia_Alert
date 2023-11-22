@@ -43,8 +43,8 @@ const Home = () => {
               />
             );
           return (
-            <MaterialIcons
-              name="admin-panel-settings"
+            <FontAwesome
+              name="plus-square-o"
               size={24}
               color={focused ? "black" : "gray"}
             />
@@ -72,7 +72,7 @@ const Home = () => {
         component={HomeScreen}
       />
       <Tab.Screen
-        name="Admin"
+        name="Post"
         options={{
           headerLeft: () => <HeaderBtn iconUrl={menu} dimension="60%" />,
           headerShadowVisible: false,
