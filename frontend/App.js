@@ -23,7 +23,7 @@ const Tab = createBottomTabNavigator();
 const Home = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="News"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === "Profile")
@@ -34,7 +34,7 @@ const Home = () => {
                 color={focused ? "black" : "gray"}
               />
             );
-          else if (route.name === "Home")
+          else if (route.name === "News")
             return (
               <FontAwesome
                 name="newspaper-o"
@@ -63,7 +63,7 @@ const Home = () => {
         component={ProfileScreen}
       />
       <Tab.Screen
-        name="Home"
+        name="News"
         options={{
           headerLeft: () => <HeaderBtn iconUrl={menu} dimension="60%" />,
           headerRight: () => <HeaderBtn iconUrl={profile} dimension="80%" />,

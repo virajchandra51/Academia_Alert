@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     width: "100%",
-    padding: theme.SIZES.xxLarge,
+    padding: theme.SIZES.xLarge,
     justifyContent: "center",
     alignItems: "flex-start",
   },

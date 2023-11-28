@@ -6,7 +6,7 @@ const Button = (props) => {
     const filledBgColor = props.color || theme.COLORS.primary;
     const outlinedColor = theme.COLORS.white;
     const bgColor = props.filled ? filledBgColor : outlinedColor;
-    const textColor = props.filled ? theme.COLORS.white : theme.COLORS.primary;
+    const textColor = props.filled ? theme.COLORS.white : theme.COLORS.secondary;
 
     return (
         <TouchableOpacity
