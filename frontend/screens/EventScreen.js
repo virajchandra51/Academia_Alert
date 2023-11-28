@@ -46,7 +46,7 @@ const EventScreen = ({ route, navigation }) => {
               style={{
                 marginLeft: 7,
                 fontSize: theme.SIZES.medium,
-                color: theme.COLORS.gray,
+                color: theme.COLORS.primary,
               }}
             >
               {route.params.data.date}
@@ -70,7 +70,7 @@ const EventScreen = ({ route, navigation }) => {
               style={{
                 marginLeft: 10,
                 fontSize: theme.SIZES.medium,
-                color: theme.COLORS.gray,
+                color: theme.COLORS.primary,
               }}
             >
               {route.params.data.time}
@@ -93,7 +93,7 @@ const EventScreen = ({ route, navigation }) => {
               style={{
                 marginLeft: 14,
                 fontSize: theme.SIZES.medium,
-                color: theme.COLORS.gray,
+                color: theme.COLORS.primary,
               }}
             >
               {route.params.data.venue}
