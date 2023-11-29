@@ -24,8 +24,7 @@ const Button = (props) => {
 
 const styles = StyleSheet.create({
     button: {
-        paddingBottom: 16,
-        paddingVertical: 10,
+        height: 52,
         borderColor: theme.COLORS.primary,
         borderWidth: 2,
         borderRadius: 12,
