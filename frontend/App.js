@@ -113,7 +113,7 @@ const App = () => {
   if (showOnboarding) {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Onboarding">
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false, headerShadowVisible: false }}
@@ -149,7 +149,7 @@ const App = () => {
   } else if (loggedIn) {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Onboarding">
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false, headerShadowVisible: false }}
@@ -185,7 +185,7 @@ const App = () => {
   } else {
     return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Onboarding">
           <Stack.Screen
             name="Onboarding"
             options={{ headerShown: false, headerShadowVisible: false }}
