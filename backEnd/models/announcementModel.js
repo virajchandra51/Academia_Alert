@@ -12,7 +12,6 @@ const announcementSchema = new mongoose.Schema(
       trim: true,
       // validate: [validator.isAlpha, 'announcement name must only contain characters']
     },
-    slug: String,
 
     associatedClub: {
       type: String,
