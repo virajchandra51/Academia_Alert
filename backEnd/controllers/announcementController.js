@@ -11,8 +11,9 @@ exports.createNew = catchAsync(async (req, res, next) => {
     //imageCover: req.body.imageCover,
   });
 
-  res.status(201).json({
-    status: "success",
+  res.status(200).json({
+    status_msg: "success",
+    status_code: statusCode,
     data: {
       newAnnouncement,
     },
