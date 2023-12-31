@@ -1,22 +1,27 @@
 const express = require("express");
-const multer = require('multer');
+const multer = require("multer");
 
 const userController = require("./../controllers/userController");
 const authController = require("./../controllers/authController");
 
 const router = express.Router();
 
-const upload = multer({ dest: 'public/images/user_images' });
+const upload = multer({ dest: "public/images/user_images" });
 
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
 router.get("/logout", authController.logout);
 router.get("/getAll", userController.getAllUsers);
-
+router.get(
+  "/me",
+  authController.protect,
+  userController.getMe,
+  userController.getUser
+);
 // Protect all routes after this middleware
 //router.use(authController.protect);
 
-router.patch("/updateMe", upload.single('photo'), userController.updateMe);
+router.patch("/updateMe", upload.single("photo"), userController.updateMe);
 router.delete("/deleteMe", userController.deleteMe);
 
 router.route("/createUser").post(userController.createUser);
@@ -30,8 +35,7 @@ router
   .delete(userController.deleteUser);
 
 //PASSWORD FORGET & RESET
-router.post('/forgetPassword', authController.forgetPassword);
-router.patch('/resetPassword/:token', authController.resetPassword);
-
+router.post("/forgetPassword", authController.forgetPassword);
+router.patch("/resetPassword/:token", authController.resetPassword);
 
 module.exports = router;
